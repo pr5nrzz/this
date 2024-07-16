@@ -546,7 +546,7 @@
 //     console.log("a: " + a, "b: " + b);
 // }
 
-// // DMZ Object
+// // DMZ Object (completly empty, non delegated object)
 // var obj = Object.create(null);
 
 // foo.apply(obj, [2, 3]);

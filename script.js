@@ -579,3 +579,127 @@
 // var boundFunc = workshop.ask.bind(workshop);
 // newObject.apply(workshop, ["What does this do?"]);
 // new newObject("What does this do?");
+
+/*
+    Exceptions
+*/
+// function foo() {
+// 	console.log( this.a ); // 2
+// }
+
+// var a = 2;
+
+// foo.call( null ); // null/undefined is ignored and resolves to default binding
+
+// function foo(a, b) {
+//     console.log("a: " + a, "b: " + b);
+// }
+
+// // spreading out array as parameters
+// foo.apply(null, [2, 3]);
+
+// // currying with bind(..)
+// var bar = foo.bind(null, 2);
+// bar(3);
+
+// Safer choice
+// function foo(a, b) {
+//     console.log("a: " + a, "b: " + b);
+// }
+
+// // DMZ Object (completly empty, non delegated object)
+// var obj = Object.create(null);
+
+// foo.apply(obj, [2, 3]);
+
+// var bar = foo.bind(obj, 2);
+// bar(3);
+
+// var myObj = { a: 2 };
+// var newObj = Object.create(myObj); 
+// console.log(newObj);
+// console.log(newObj.a);
+
+/*
+    Arrow Functions (Lexical this)
+*/
+// function foo() {
+//     // this -> obj1
+//     return (a) => {
+//         console.log(this.a);// 2
+//     }
+
+//     // return function(a) {
+//     //     console.log(this.a); // undefined
+//     // }
+// }
+
+// var obj1 = {
+//     a: 2
+// };
+
+// var obj2 = {
+//     a: 3
+// };
+
+// var bar = foo.call(obj1);
+// bar.call(obj2); // 2
+/*
+    (a) => {
+        // this -> obj2
+        console.log(this.a); // 3
+    } 
+*/
+
+// function foo() {
+//     // this -> obj
+//     setTimeout(() => {
+//         console.log(this.a); // 2
+//     }, 10);
+
+//     // setTimeout(function () {
+//     //     console.log(this.a); // undefined
+//     // }, 10);
+// }
+
+// var obj = {
+//     a: 2
+// };
+
+// foo.call(obj);
+
+// function foo() {
+//     var self = this;
+
+//     setTimeout(function() {
+//         console.log(self.a);
+//     }, 10);
+// }
+
+// var obj = {
+//     a: 2
+// };
+
+// foo.call(obj);
+
+// var workshop = {
+//     teacher: "Kyle",
+//     ask(question) {
+//         // this -> workshop
+//         setTimeout(() => {
+//             console.log(this.teacher, question); // Kyle Is this lexical 'this'?
+//         }, 100);
+//     }
+// };
+
+// workshop.ask("Is this lexical 'this'?"); 
+
+// var workshop = {
+//     teacher: "Kyle",
+//     ask: (question) => {
+//         console.log(this.teacher, question);
+//     }
+// };
+
+// workshop.ask("What happened to 'this'?");
+// workshop.ask.call(workshop, "Still no 'this'?");
