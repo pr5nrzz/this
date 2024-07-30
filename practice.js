@@ -44,13 +44,13 @@ var workshop = {
             this.printRecord(studentRecord);
         }
     },
-    printRecord(studentRecord) {
-        console.log(`${studentRecord.Name} (${studentRecord.Id}) ${studentRecord.Paid ? 'Paid' : 'Not Paid'}`);
-    },
     unPaidStudentRecord(enrolledStudent) {
         if (!enrolledStudent.Paid) {
             return enrolledStudent;
         }
+    },
+    printRecord(studentRecord) {
+        console.log(`${studentRecord.Name} (${studentRecord.Id}) ${studentRecord.Paid ? 'Paid' : 'Not Paid'}`);
     },
     ascSortByName(studentRecords) {
         return studentRecords.sort(this.sortByName);
@@ -95,5 +95,3 @@ console.log("========");
 workshop.paidStudentsYetToEnroll();
 console.log("========");
 workshop.remindUnPaidStudents();
-
-

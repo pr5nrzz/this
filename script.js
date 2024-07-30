@@ -404,3 +404,231 @@
 // };
 
 // [1, 2, 3].forEach(foo, obj);
+
+/*
+    class MyClass {
+        MyClass(a) {
+            this.a = a;
+        }
+    }
+
+    var myObject = new MyClass();
+
+    function MyClass() {
+
+    }
+
+    var myObject = new MyClass();
+*/
+
+/*
+    new Binding
+    1. It creates a new object
+    2. It links the new object to another object
+    3. It points the this keyword to the newly created object
+    4. If nothing is returned, it assumes that you meant to return 'this'
+*/
+
+// function foo(a) {
+//     this.a = a;
+// }
+
+// var bar = new foo(2);
+// console.log(bar.a); // 2
+
+// function ask(question) {
+//     console.log(this.teacher, question);
+//     this.teacher = "Kyle";
+// }
+
+// var newObject = new ask("What is new doing here?");
+// console.log(newObject);
+
+/*
+    Order of execution
+*/
+
+// function foo() {
+//     console.log(this.a);
+// }
+
+// var obj1 = {
+//     foo: foo,
+//     a: 2
+// };
+
+// var obj2 = {
+//     foo: foo,
+//     a: 5
+// };
+
+// obj1.foo(); // 2
+// obj2.foo(); // 5
+
+// obj1.foo.call(obj2); // 5
+// obj2.foo.call(obj1); // 2
+
+// function foo(something) {
+//     this.a = something;
+// }
+
+// var obj1 = {
+//     foo: foo
+// };
+
+// var obj2 = {};
+
+// obj1.foo(2); // Implicit Binding
+// console.log(obj1.a); // 2
+
+// obj1.foo.call(obj2, 3); // Explicit binding
+// console.log(obj2.a); // 3
+// console.log(obj1.a); // 2
+
+// var bar = new obj1.foo(4);  // new and call/apply cannot be used together, so new foo.call(obj1) is not allowed
+// console.log(obj1.a); // 2
+// console.log(bar.a); // 4
+
+// var baz = new foo.call(obj2, 5); // TypeError: foo.call is not a constructor
+
+// function foo(something) {
+//     this.a = something;
+// }
+
+// var obj = {};
+
+// var bar = foo.bind(obj);
+
+// bar(2);
+// console.log(obj.a); // 2
+
+// var baz = new bar(3); 
+// console.log(obj.a); // 2
+// console.log(baz.a); // 3
+
+// Partial function
+// function foo(p1, p2) {
+//     this.val = p1 + p2;
+// }
+
+// var bar = foo.bind(null, "p1");
+
+// var baz = new bar("p2");
+
+// console.log(baz.val); // p1p2
+
+// var workshop = {
+//     teacher: "Kyle",
+//     ask: function ask(question) {
+//         console.log(this.teacher, question); // undefined What does this do?
+//     }
+// };
+
+// new (workshop.ask.bind(workshop))("What does this do?");
+
+/*
+    Exceptions
+*/
+
+// function foo() {
+//     console.log(this.a); // 2
+// }
+
+// var a = 2;
+
+// foo.call(null);
+// foo.call(undefined);
+
+// function foo(a, b) {
+//     console.log("a: " + a, "b: " + b);
+// }
+
+// // spreading out array as parameters
+// foo.apply(null, [2, 3]);
+
+// // currying with bind(..)
+// var bar = foo.bind(null, 2);
+// bar(3);
+
+// Safer choice
+// function foo(a, b) {
+//     console.log("a: " + a, "b: " + b);
+// }
+
+// // DMZ Object (completly empty, non delegated object)
+// var obj = Object.create(null);
+
+// foo.apply(obj, [2, 3]);
+
+// var bar = foo.bind(obj, 2);
+// bar(3);
+
+/*
+    Arrow Functions (Lexical this)
+*/
+
+// function foo() {
+//     // this -> obj1
+//     return (a) => {
+//         console.log(this.a); // 2
+//     }
+// }
+
+// var obj1 = {
+//     a: 2
+// };
+
+// var obj2 = {
+//     a: 3
+// };
+
+// var bar = foo.call(obj1);
+// bar.call(obj2);
+
+// function foo() {
+//     // this -> obj
+//     setTimeout(() => {
+//         console.log(this.a); // 2
+//     }, 10);
+// }
+
+// var obj = {
+//     a: 2
+// };
+
+// foo.call(obj);
+
+// function foo() {
+//     var self = this;
+
+//     setTimeout(function() {
+//         console.log(self.a);
+//     }, 10);
+// }
+
+// var obj = {
+//     a: 2
+// };
+
+// foo.call(obj);
+
+// var workshop = {
+//     teacher: "Kyle",
+//     ask(question) {
+//         setTimeout(() => {
+//             console.log(this.teacher, question);
+//         }, 100);
+//     }
+// };
+
+// workshop.ask("Is this lexical 'this'?");
+
+// var workshop = {
+//     teacher: "Kyle",
+//     ask: (question) => {
+//         console.log(this.teacher, question);
+//     }
+// };
+
+// workshop.ask("What happened to 'this'?"); 
+// workshop.ask.call(workshop, "Still no 'this'?");
